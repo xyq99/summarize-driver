@@ -139,7 +139,7 @@ flowchart TD
     P --> Q{返回值 != pdFALSE?}
     Q -- 是 --> R[正常启动，函数不返回]
     Q -- 否 --> S[从 xTaskEndScheduler 返回]
-``` 
+```
 ---
 
 ## 5. 常见配置影响

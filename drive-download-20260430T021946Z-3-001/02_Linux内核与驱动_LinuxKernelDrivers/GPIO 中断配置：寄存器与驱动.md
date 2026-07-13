@@ -52,9 +52,9 @@
 
 虽然底层是改寄存器，但在 Linux 内核驱动开发中，你通常不需要手动去写 readl/writel 来操作这些地址。你更多是通过 **Device Tree (DTS)** 和 **gpiolib 接口** 来完成：
 
-1.  **DTS 配置：**  
-    代码段  
-    interrupt-parent = \<&gpio0\>;  
+1.  **DTS 配置：**\
+    代码段\
+    interrupt-parent = \<&gpio0\>;\
     interrupts = \<RK_PA1 IRQ_TYPE_EDGE_FALLING\>; // 配置引脚和下降沿触发
 
 2.  **内核 API：** 驱动中使用 request_irq()，内核会自动帮你完成上述所有寄存器的位操作。

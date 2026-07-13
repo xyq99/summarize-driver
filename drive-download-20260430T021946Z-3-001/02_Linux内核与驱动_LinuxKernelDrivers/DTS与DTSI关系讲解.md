@@ -4,10 +4,10 @@
 
 ## 1. 基本定义与包含关系
 
-- **.dtsi (Device Tree Include)**：  
+- **.dtsi (Device Tree Include)**：\
   可以类比为 C 语言中的 **.h 头文件**。它通常包含通用的硬件描述。例如，RK3568 的 CPU 核心数、GPU 基地址、中断控制器等所有板卡通用的部分。
 
-- **.dts (Device Tree Source)**：  
+- **.dts (Device Tree Source)**：\
   可以类比为 **.c 源文件**。它代表具体的“开发板”或“产品”。它会通过 /include/ 指令包含一个或多个 .dtsi 文件，并根据实际电路设计添加或修改节点。
 
 ## 2. 以 RK3568 为例的层级结构
@@ -46,25 +46,26 @@
 
 > C++
 
-// rk3568.dtsi (芯片级)  
-uart2: serial@fe660000 {  
-compatible = "rockchip,rk3568-uart";  
-reg = \<0x0 0xfe660000 0x0 0x100\>;  
-status = "disabled"; // 默认关闭  
-};  
-  
-// your-board.dts (你的开发板)  
-/include/ "rk3568.dtsi"  
-  
-&uart2 {  
-status = "okay"; // 覆盖上面的 disabled，开启串口  
-pinctrl-0 = \<&uart2m0_xfer\>; // 指定具体的引脚复用  
+// rk3568.dtsi (芯片级)\
+uart2: serial@fe660000 {\
+compatible = "rockchip,rk3568-uart";\
+reg = \<0x0 0xfe660000 0x0 0x100\>;\
+status = "disabled"; // 默认关闭\
+};\
+\
+// your-board.dts (你的开发板)\
+/include/ "rk3568.dtsi"\
+\
+&uart2 {\
+status = "okay"; // 覆盖上面的 disabled，开启串口\
+pinctrl-0 = \<&uart2m0_xfer\>; // 指定具体的引脚复用\
 };
 
 ## 总结
 
-| **特性**        | **.dtsi**           | **.dts**                      |
+|                 |                     |                               |
 |-----------------|---------------------|-------------------------------|
+| **特性**        | **.dtsi**           | **.dts**                      |
 | **角色**        | 模板、通用公共部分  | 最终产品、具体配置            |
 | **包含方式**    | 被别人包含          | 包含 .dtsi 文件               |
 | **编译结果**    | 不直接编译成二进制  | 编译成 .dtb 给内核读取        |

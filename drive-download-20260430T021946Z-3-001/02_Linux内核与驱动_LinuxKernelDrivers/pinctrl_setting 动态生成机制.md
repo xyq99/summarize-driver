@@ -34,12 +34,13 @@
 
 ## 3. 结构体内容的演变
 
-| **维度**       | **pinctrl_map (配置单)**            | **pinctrl_setting (施工单)**        |
-|----------------|-------------------------------------|-------------------------------------|
-| **存储位置**   | 系统全局链表                        | 设备的 pinctrl 实例内部             |
-| **核心识别**   | 字符串 (Device Name, Function Name) | 数字索引 (Group ID, Function ID)    |
-| **控制器引用** | 字符串 (ctrl_dev_name)              | 指针 (struct pinctrl_dev \*pctldev) |
-| **生命周期**   | 从 DTB 解析后一直存在               | 随设备驱动的加载而创建，卸载而销毁  |
+|  |  |  |
+|----|----|----|
+| **维度** | **pinctrl_map (配置单)** | **pinctrl_setting (施工单)** |
+| **存储位置** | 系统全局链表 | 设备的 pinctrl 实例内部 |
+| **核心识别** | 字符串 (Device Name, Function Name) | 数字索引 (Group ID, Function ID) |
+| **控制器引用** | 字符串 (ctrl_dev_name) | 指针 (struct pinctrl_dev \*pctldev) |
+| **生命周期** | 从 DTB 解析后一直存在 | 随设备驱动的加载而创建，卸载而销毁 |
 
 ## 4. 源码视角（简化版流程）
 
@@ -47,24 +48,24 @@
 
 > C
 
-/\* 简化逻辑：将 map 转换为 setting \*/  
-static int add_setting(struct pinctrl \*p, struct pinctrl_map const \*map)  
-{  
-struct pinctrl_setting \*setting;  
-  
-setting = kzalloc(sizeof(\*setting), GFP_KERNEL);  
-  
-// 1. 找到对应的控制器 pinctrl_dev  
-setting-\>pctldev = get_pinctrl_dev_from_devname(map-\>ctrl_dev_name);  
-  
-// 2. 将字符串转为内部索引 (Selector)  
-if (map-\>type == PIN_MAP_TYPE_MUX_GROUP) {  
-setting-\>data.mux.func = pinmux_get_func_selector(setting-\>pctldev, map-\>data.mux.function);  
-setting-\>data.mux.group = pinctrl_get_group_selector(setting-\>pctldev, map-\>data.mux.group);  
-}  
-  
-// 3. 挂载到该设备的状态链表中  
-list_add_tail(&setting-\>node, &p-\>settings);  
+/\* 简化逻辑：将 map 转换为 setting \*/\
+static int add_setting(struct pinctrl \*p, struct pinctrl_map const \*map)\
+{\
+struct pinctrl_setting \*setting;\
+\
+setting = kzalloc(sizeof(\*setting), GFP_KERNEL);\
+\
+// 1. 找到对应的控制器 pinctrl_dev\
+setting-\>pctldev = get_pinctrl_dev_from_devname(map-\>ctrl_dev_name);\
+\
+// 2. 将字符串转为内部索引 (Selector)\
+if (map-\>type == PIN_MAP_TYPE_MUX_GROUP) {\
+setting-\>data.mux.func = pinmux_get_func_selector(setting-\>pctldev, map-\>data.mux.function);\
+setting-\>data.mux.group = pinctrl_get_group_selector(setting-\>pctldev, map-\>data.mux.group);\
+}\
+\
+// 3. 挂载到该设备的状态链表中\
+list_add_tail(&setting-\>node, &p-\>settings);\
 }
 
 ## 总结

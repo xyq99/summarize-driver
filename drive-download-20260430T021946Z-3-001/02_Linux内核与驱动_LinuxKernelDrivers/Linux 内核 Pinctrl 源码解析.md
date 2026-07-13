@@ -12,14 +12,14 @@
 
 > C
 
-/\* 定义具体的引脚编号 \*/  
-static const unsigned int uart1_pins\[\] = { 10, 11 };  
-static const unsigned int i2c1_pins\[\] = { 20, 21 };  
-  
-/\* 将这些引脚封装成 Groups \*/  
-static const struct pingroup my_groups\[\] = {  
-{ .name = "uart1_grp", .pins = uart1_pins, .npins = 2 },  
-{ .name = "i2c1_grp", .pins = i2c1_pins, .npins = 2 },  
+/\* 定义具体的引脚编号 \*/\
+static const unsigned int uart1_pins\[\] = { 10, 11 };\
+static const unsigned int i2c1_pins\[\] = { 20, 21 };\
+\
+/\* 将这些引脚封装成 Groups \*/\
+static const struct pingroup my_groups\[\] = {\
+{ .name = "uart1_grp", .pins = uart1_pins, .npins = 2 },\
+{ .name = "i2c1_grp", .pins = i2c1_pins, .npins = 2 },\
 };
 
 #### 功能 (Functions) 的定义
@@ -28,12 +28,12 @@ static const struct pingroup my_groups\[\] = {
 
 > C
 
-/\* 定义一个功能支持哪些引脚组（一个功能可能有多种走线方案） \*/  
-static const char \* const uart1_grps\[\] = { "uart1_grp", "uart1_alt_grp" };  
-  
-static const struct pinfunction my_functions\[\] = {  
-{ .name = "uart1", .groups = uart1_grps, .ngroups = 2 },  
-{ .name = "i2c1", .groups = { "i2c1_grp" }, .ngroups = 1 },  
+/\* 定义一个功能支持哪些引脚组（一个功能可能有多种走线方案） \*/\
+static const char \* const uart1_grps\[\] = { "uart1_grp", "uart1_alt_grp" };\
+\
+static const struct pinfunction my_functions\[\] = {\
+{ .name = "uart1", .groups = uart1_grps, .ngroups = 2 },\
+{ .name = "i2c1", .groups = { "i2c1_grp" }, .ngroups = 1 },\
 };
 
 ### 2. 关键回调函数：内核是怎么“用”的？
@@ -42,23 +42,23 @@ static const struct pinfunction my_functions\[\] = {
 
 > C
 
-static int my_pinctrl_set_mux(struct pinctrl_dev \*pctldev,  
-unsigned int selector, // Function 的索引  
-unsigned int group) // Group 的索引  
-{  
-/\* 1. 根据 selector 找到具体的功能（如 UART） \*/  
-/\* 2. 根据 group 找到具体的物理引脚（如 Pin 10, 11） \*/  
-  
-/\* 3. 硬件操作：写入寄存器 \*/  
-// 遍历该 Group 里的所有 pins，通过写 IOMUX 寄存器，  
-// 将这些物理引脚的 MUX 模式切换到对应的 Function。  
-  
-for (i = 0; i \< grp-\>npins; i++) {  
-unsigned int pin = grp-\>pins\[i\];  
-write_register(MUX_REG(pin), MUX_MODE_UART);  
-}  
-  
-return 0;  
+static int my_pinctrl_set_mux(struct pinctrl_dev \*pctldev,\
+unsigned int selector, // Function 的索引\
+unsigned int group) // Group 的索引\
+{\
+/\* 1. 根据 selector 找到具体的功能（如 UART） \*/\
+/\* 2. 根据 group 找到具体的物理引脚（如 Pin 10, 11） \*/\
+\
+/\* 3. 硬件操作：写入寄存器 \*/\
+// 遍历该 Group 里的所有 pins，通过写 IOMUX 寄存器，\
+// 将这些物理引脚的 MUX 模式切换到对应的 Function。\
+\
+for (i = 0; i \< grp-\>npins; i++) {\
+unsigned int pin = grp-\>pins\[i\];\
+write_register(MUX_REG(pin), MUX_MODE_UART);\
+}\
+\
+return 0;\
 }
 
 ### 3. 设计上的深度思考：为什么要分两层？

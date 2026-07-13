@@ -50,7 +50,7 @@
 
 针对中断引起的死锁，Linux 提供了特殊的 API：
 
-- **spin_lock_irqsave() / spin_unlock_irqrestore()**：  
+- **spin_lock_irqsave() / spin_unlock_irqrestore()**：\
   这是在 RK3568 驱动开发中最推荐的方式。它在加锁的同时**禁止本地中断**，并保存当前中断状态。这样可以确保在持有锁期间，不会有中断进来抢占 CPU 导致死锁。
 
 ### 2. 避免递归逻辑

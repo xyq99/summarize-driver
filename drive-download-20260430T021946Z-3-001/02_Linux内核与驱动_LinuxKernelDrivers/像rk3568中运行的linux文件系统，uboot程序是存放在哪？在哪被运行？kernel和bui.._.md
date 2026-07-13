@@ -40,12 +40,12 @@ U-Boot 在 RK3568 中通常分为两个阶段（TPL/SPL 和主 U-Boot）。
 
 ### 总结：RK3568 的数据流向图
 
-| 组件          | 存放地 (Non-Volatile) | 运行地 (Volatile) | 备注                           |
-|---------------|-----------------------|-------------------|--------------------------------|
-| **ROM Code**  | SoC 内部 MaskROM      | SoC 内部          | 厂家写死，不可更改             |
-| **U-Boot**    | eMMC / SPI Flash      | **DDR**           | 由 SPL 初始化 DDR 后搬运       |
-| **Kernel**    | eMMC / SD Card        | **DDR**           | 由 U-Boot 负责搬运并引导       |
-| **Buildroot** | eMMC / SD Card        | **DDR**           | 只有被调用的程序才会加载到 DDR |
+| 组件 | 存放地 (Non-Volatile) | 运行地 (Volatile) | 备注 |
+|----|----|----|----|
+| **ROM Code** | SoC 内部 MaskROM | SoC 内部 | 厂家写死，不可更改 |
+| **U-Boot** | eMMC / SPI Flash | **DDR** | 由 SPL 初始化 DDR 后搬运 |
+| **Kernel** | eMMC / SD Card | **DDR** | 由 U-Boot 负责搬运并引导 |
+| **Buildroot** | eMMC / SD Card | **DDR** | 只有被调用的程序才会加载到 DDR |
 
 ### 为什么 RK3568 不像你之前问的那样跑在 NOR Flash 里？
 

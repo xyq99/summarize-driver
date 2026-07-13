@@ -64,10 +64,10 @@
 
 > Bash
 
-\# 使用多核编译  
-make -j\$(nproc) bzImage modules  
-  
-\# 检查内核镜像体积  
+\# 使用多核编译\
+make -j\$(nproc) bzImage modules\
+\
+\# 检查内核镜像体积\
 ls -lh arch/x86/boot/bzImage \# 或 arch/arm/boot/zImage
 
 ### 进一步瘦身工具：Scripts/bloat-o-meter
@@ -80,7 +80,7 @@ ls -lh arch/x86/boot/bzImage \# 或 arch/arm/boot/zImage
 
 1.  **Storage Footprint:** vmlinuz 的字节数。
 
-2.  **Boot Time:** 使用 systemd-analyze 或通过串口抓取 dmesg 中的时间戳：\[ 0.000000\] Linux version 5.10.x ...  
+2.  **Boot Time:** 使用 systemd-analyze 或通过串口抓取 dmesg 中的时间戳：\[ 0.000000\] Linux version 5.10.x ...\
     \[ 1.234567\] Freeing unused kernel image memory...（此行代表内核初始化完成）
 
 ### 进阶提示

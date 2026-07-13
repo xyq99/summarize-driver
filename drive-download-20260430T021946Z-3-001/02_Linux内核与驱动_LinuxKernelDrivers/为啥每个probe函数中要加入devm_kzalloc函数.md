@@ -18,26 +18,26 @@
 
 #### 传统 kzalloc 写法：
 
-static int my_probe(struct i2c_client \*client) {  
-struct my_data \*priv = kzalloc(sizeof(\*priv), GFP_KERNEL);  
-if (!priv) return -ENOMEM;  
-  
-ret = request_irq(client-\>irq, ...);  
-if (ret) {  
-kfree(priv); // 必须手动释放  
-return ret;  
-}  
-// ... 更多的错误处理逻辑  
+static int my_probe(struct i2c_client \*client) {\
+struct my_data \*priv = kzalloc(sizeof(\*priv), GFP_KERNEL);\
+if (!priv) return -ENOMEM;\
+\
+ret = request_irq(client-\>irq, ...);\
+if (ret) {\
+kfree(priv); // 必须手动释放\
+return ret;\
+}\
+// ... 更多的错误处理逻辑\
 }
 
 #### 使用 devm_kzalloc 写法：
 
-static int my_probe(struct i2c_client \*client) {  
-// 内存申请后直接不管了，内核会负责到底  
-struct my_data \*priv = devm_kzalloc(&client-\>dev, sizeof(\*priv), GFP_KERNEL);  
-if (!priv) return -ENOMEM;  
-  
-return request_irq(client-\>irq, ...); // 即使失败，priv 也会被自动回收  
+static int my_probe(struct i2c_client \*client) {\
+// 内存申请后直接不管了，内核会负责到底\
+struct my_data \*priv = devm_kzalloc(&client-\>dev, sizeof(\*priv), GFP_KERNEL);\
+if (!priv) return -ENOMEM;\
+\
+return request_irq(client-\>irq, ...); // 即使失败，priv 也会被自动回收\
 }
 
 ### 3. 在 Probe 中的典型用途

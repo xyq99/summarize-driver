@@ -44,17 +44,17 @@
 
 > DTS
 
-&uart2 {  
-pinctrl-names = "default";  
-pinctrl-0 = \<&uart2m1_xfer\>; // 告诉 pinctrl 将引脚切到 UART 模式  
-status = "okay";  
-};  
-  
-// 或者配置为 GPIO  
-my_device {  
-pinctrl-names = "default";  
-pinctrl-0 = \<&my_gpio_pins\>; // 配置为 GPIO 模式且带上拉  
-gpios = \<&gpio0 RK_PB5 GPIO_ACTIVE_HIGH\>;  
+&uart2 {\
+pinctrl-names = "default";\
+pinctrl-0 = \<&uart2m1_xfer\>; // 告诉 pinctrl 将引脚切到 UART 模式\
+status = "okay";\
+};\
+\
+// 或者配置为 GPIO\
+my_device {\
+pinctrl-names = "default";\
+pinctrl-0 = \<&my_gpio_pins\>; // 配置为 GPIO 模式且带上拉\
+gpios = \<&gpio0 RK_PB5 GPIO_ACTIVE_HIGH\>;\
 };
 
 ## 3. 关键关联接口：gpio_chip 与 pinctrl_dev
@@ -67,12 +67,13 @@ gpios = \<&gpio0 RK_PB5 GPIO_ACTIVE_HIGH\>;
 
 ## 总结
 
-| **特性**     | **pinctrl 子系统**              | **GPIO 子系统**                     |
-|--------------|---------------------------------|-------------------------------------|
-| **关注点**   | 引脚“是什么”（功能选择）        | 引脚“发什么”（高低电平）            |
-| **配置内容** | 复用、上下拉、驱动强度          | 输入、输出、中断触发                |
-| **执行顺序** | 必须先配置（通常在 probe 阶段） | 配置完成后进行逻辑操作              |
-| **层级关系** | 处于更底层，是 GPIO 的基础      | 建立在 pinctrl 提供的 GPIO 功能之上 |
+|  |  |  |
+|----|----|----|
+| **特性** | **pinctrl 子系统** | **GPIO 子系统** |
+| **关注点** | 引脚“是什么”（功能选择） | 引脚“发什么”（高低电平） |
+| **配置内容** | 复用、上下拉、驱动强度 | 输入、输出、中断触发 |
+| **执行顺序** | 必须先配置（通常在 probe 阶段） | 配置完成后进行逻辑操作 |
+| **层级关系** | 处于更底层，是 GPIO 的基础 | 建立在 pinctrl 提供的 GPIO 功能之上 |
 
 **一句话总结：** pinctrl 是\*\*“修路”**的（把引脚功能拨到 GPIO 这一边），GPIO 是**“开车”\*\*的（在路上跑高低电平信号）。
 

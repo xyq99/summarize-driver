@@ -62,23 +62,24 @@
 
 > 代码段
 
-uart1_pins: uart1-pins {  
-pinmux {  
-/\* 这里就是将 function 和 group 绑定在一起 \*/  
-function = "uart1";  
-groups = "uart1_grp_a";  
-};  
-/\* 顺便配置电气属性，如上拉、驱动能力等 \*/  
-conf {  
-pins = "gpio1", "gpio2";  
-bias-pull-up;  
-};  
+uart1_pins: uart1-pins {\
+pinmux {\
+/\* 这里就是将 function 和 group 绑定在一起 \*/\
+function = "uart1";\
+groups = "uart1_grp_a";\
+};\
+/\* 顺便配置电气属性，如上拉、驱动能力等 \*/\
+conf {\
+pins = "gpio1", "gpio2";\
+bias-pull-up;\
+};\
 };
 
 ## 5. 总结
 
-| **概念**     | **关注点**                    | **例子**                 |
+|              |                               |                          |
 |--------------|-------------------------------|--------------------------|
+| **概念**     | **关注点**                    | **例子**                 |
 | **Function** | **逻辑功能** (做什么？)       | UART, I2C, PWM           |
 | **Group**    | **物理路径** (用哪几根线做？) | pin_group_0, pin_group_1 |
 

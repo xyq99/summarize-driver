@@ -28,10 +28,10 @@ Linux 提供了一种动态解绑驱动的方法：
 
 1.  找到占用该 LED 的平台设备名称：ls /sys/bus/platform/drivers/leds-gpio/。
 
-2.  执行解绑命令：  
-    Bash  
-    echo "leds-gpio.0" \> /sys/bus/platform/drivers/leds-gpio/unbind  
-      
+2.  执行解绑命令：\
+    Bash\
+    echo "leds-gpio.0" \> /sys/bus/platform/drivers/leds-gpio/unbind\
+    \
     （注意：leds-gpio.0 需替换为实际查看到的设备名）。执行后，该 GPIO 会被释放，你就可以加载自己的驱动了。
 
 #### 方法 B：修改设备树 (Device Tree)
@@ -40,8 +40,8 @@ Linux 提供了一种动态解绑驱动的方法：
 
 > DTS
 
-leds {  
-status = "disabled"; // 禁用原有的 LED 驱动节点  
+leds {\
+status = "disabled"; // 禁用原有的 LED 驱动节点\
 };
 
 ## 4. 驱动开发的建议流程

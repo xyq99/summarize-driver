@@ -20,8 +20,8 @@ reg 通常成对出现，格式为 \<address length\>。
 
 例如：
 
-uart0: serial@101f1000 {  
-reg = \<0x101f1000 0x1000\>;  
+uart0: serial@101f1000 {\
+reg = \<0x101f1000 0x1000\>;\
 };
 
 这里的 0x101f1000 就是 UART 控制器在芯片手册（Datasheet）中标注的物理基地址。

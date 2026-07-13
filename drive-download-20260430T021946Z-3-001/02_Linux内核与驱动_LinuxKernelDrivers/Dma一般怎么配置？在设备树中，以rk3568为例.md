@@ -6,15 +6,15 @@
 
 在 rk3568.dtsi 中，你会看到类似 DMAC 的定义。RK3568 通常有多个 DMA 控制器（如 dmac0, dmac1），它们是硬件资源池。
 
-dmac0: dma-controller@fe270000 {  
-compatible = "arm,pl330", "arm,primecell";  
-reg = \<0x0 0xfe270000 0x0 0x4000\>;  
-interrupts = \<GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH\>,  
-\<GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH\>;  
-\#dma-cells = \<1\>; // 关键：决定了引用时需要多少个参数  
-arm,pl330-broken-no-flushp;  
-clocks = \<&cru ACLK_DMAC0\>;  
-clock-names = "apb_pclk";  
+dmac0: dma-controller@fe270000 {\
+compatible = "arm,pl330", "arm,primecell";\
+reg = \<0x0 0xfe270000 0x0 0x4000\>;\
+interrupts = \<GIC_SPI 143 IRQ_TYPE_LEVEL_HIGH\>,\
+\<GIC_SPI 144 IRQ_TYPE_LEVEL_HIGH\>;\
+\#dma-cells = \<1\>; // 关键：决定了引用时需要多少个参数\
+arm,pl330-broken-no-flushp;\
+clocks = \<&cru ACLK_DMAC0\>;\
+clock-names = "apb_pclk";\
 };
 
 ### 2. 外设如何引用 DMA (Consumer)
@@ -25,15 +25,15 @@ clock-names = "apb_pclk";
 
 以 UART 为例，通常需要两个通道：一个用于发送 (tx)，一个用于接收 (rx)。
 
-&uart1 {  
-status = "okay";  
-pinctrl-names = "default";  
-pinctrl-0 = \<&uart1m0_xfer\>;  
-  
-/\* 配置 DMA \*/  
-dmas = \<&dmac0 0\>, // 引用 dmac0，通道 ID 为 0 (TX)  
-\<&dmac0 1\>; // 引用 dmac0，通道 ID 为 1 (RX)  
-dma-names = "tx", "rx"; // 必须与驱动程序中申请的名称对应  
+&uart1 {\
+status = "okay";\
+pinctrl-names = "default";\
+pinctrl-0 = \<&uart1m0_xfer\>;\
+\
+/\* 配置 DMA \*/\
+dmas = \<&dmac0 0\>, // 引用 dmac0，通道 ID 为 0 (TX)\
+\<&dmac0 1\>; // 引用 dmac0，通道 ID 为 1 (RX)\
+dma-names = "tx", "rx"; // 必须与驱动程序中申请的名称对应\
 };
 
 **参数解析：**
@@ -50,22 +50,22 @@ dma-names = "tx", "rx"; // 必须与驱动程序中申请的名称对应
 
 对于某些高性能外设（如摄像头 VIP/CSI 或特定显示模块），你可能需要为其分配一段**连续的物理内存 (CMA)**。
 
-reserved-memory {  
-\#address-cells = \<2\>;  
-\#size-cells = \<2\>;  
-ranges;  
-  
-dma_reserved: dma_mem_region {  
-compatible = "shared-dma-pool";  
-reusable;  
-size = \<0x0 0x2000000\>; // 预留 32MB  
-alloc-ranges = \<0x0 0x10000000 0x0 0x20000000\>; // 指定物理地址范围  
-linux,cma-default; // 设为默认 CMA 区域  
-};  
-};  
-  
-&some_device {  
-memory-region = \<&dma_reserved\>; // 将此前预留的内存分配给该设备  
+reserved-memory {\
+\#address-cells = \<2\>;\
+\#size-cells = \<2\>;\
+ranges;\
+\
+dma_reserved: dma_mem_region {\
+compatible = "shared-dma-pool";\
+reusable;\
+size = \<0x0 0x2000000\>; // 预留 32MB\
+alloc-ranges = \<0x0 0x10000000 0x0 0x20000000\>; // 指定物理地址范围\
+linux,cma-default; // 设为默认 CMA 区域\
+};\
+};\
+\
+&some_device {\
+memory-region = \<&dma_reserved\>; // 将此前预留的内存分配给该设备\
 };
 
 ### 4. 常见配置检查清单
